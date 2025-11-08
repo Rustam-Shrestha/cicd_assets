@@ -1,0 +1,76 @@
+# basics
+
+string_value: "hello world"
+integer_value: 42
+float_value: 3.14
+boolean_true: true
+boolean_false: false
+null_value_1: null
+null_value_2: ~
+
+# sequences block
+
+items:
+  - apple
+  - banana
+  - cherry
+
+#sequence flow
+grocery:
+   items: [apple, banana, cherry]
+
+
+# keyvalue mappings
+person:
+  name: Alice
+  age: 30
+  hobbies:
+    - reading
+    - hiking
+
+
+# multiline strings literal style |
+
+script: |
+  echo "Start"
+  
+    indented line
+  echo "End"
+
+# multiline strings folded style >
+summary: >
+  This is a long summary
+  that spans multiple lines
+  but will be folded into
+  a single line.
+
+# chomping indicators
+note_strip: |-
+  This string has no trailing newlines.
+  another line s    added
+
+note_keep: |+
+  This string keeps all trailing newlines.
+  another line s    added
+
+
+# dynamic value injection
+current_date: !!timestamp 2024-06-15T12:00:00Z
+database_url: ${{secret.DB_URL}}
+
+
+# multidoc yaml
+---
+name: Alice
+age: 30
+---
+name: Bob
+age: 40
+occupation: Engineer
+---
+name: Carol
+age: 25
+
+
+
+
