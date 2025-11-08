@@ -82,3 +82,27 @@ role: ML Researcher
 tools:
   - PyTorch
   - Hugging Face Transformers
+
+
+
+---
+config:
+  slack:
+    channels:
+      - workflow-orchestration
+      - builds-911
+
+workflow:
+  run: |
+    echo "Running script.py"
+    python3 script.py
+  notify:
+    - slack:
+        channels: ${{ config.slack.channels }}
+        message: >
+          It appears that your run has failed.
+          To gain more insights into the failure,
+          it is recommended to examine the CI logs.
+          In case further assistance is required,
+          feel free to contact the Engineer on call.
+      if: run.state == "failed"
