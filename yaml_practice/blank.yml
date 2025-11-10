@@ -16,5 +16,5 @@ jobs:
       - name: run test.py
         run: |
           echo "Starting test.py execution"
-          python cicd_assets/test.py
+          python test.py
           echo "Finished test.py execution"
