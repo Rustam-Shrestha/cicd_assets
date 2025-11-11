@@ -1,0 +1,5 @@
+this was necessary to addd as the git didnt track the empty folder
+
+but here we will get preprocessed data imputed missing value categorical value and more processing ready file
+
+in this same folder where this txt file consists
