@@ -12,14 +12,22 @@ jobs:
     steps:
       - name: Checkout 
         uses: actions/checkout@v3
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
+
 
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: 3.9
+      - name: Install dependencies
+        run: |
+           python3 -m pip install --upgrade pip
+           python3 -m pip install --no-cache-dir --force-reinstall -r requirements.txt
+      - name: Debug Python environment
+        run: |
+          which python3
+          python3 --version
+          which pip
+          pip --version
 
       # Setup CML GitHub Action
       - name: Setup CML
