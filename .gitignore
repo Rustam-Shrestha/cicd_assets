@@ -1,5 +1,5 @@
 # Ignore all CSV files
-*.csv
+# *.csv
 
 # Ignore Excel files
 *.xls
@@ -19,8 +19,8 @@
 *.pkl
 
 # Ignore any dataset folder
-datasets/
-data/
+# datasets/
+# data/
 
 jupyterenv/
 mlruns/
