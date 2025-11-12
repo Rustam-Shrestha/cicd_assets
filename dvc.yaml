@@ -1,24 +1,34 @@
 stages:
   preprocess:
-    # Run the data preprocessing script
-    cmd: python preprocess_dataset.py
+    cmd: python3 preprocess_dataset.py
     deps:
     - preprocess_dataset.py
     - raw_dataset/weather.csv
     - utils_and_constants.py
     outs:
     - processed_dataset/weather.csv
-
   train:
-    # Run the model training script
-    cmd: python train.py
+    cmd: python3 train.py
     deps:
     - metrics_and_plots.py
     - model.py
-    # Specify the preprocessed dataset as a dependency
     - processed_dataset/weather.csv
     - train.py
     - utils_and_constants.py
-    outs:
-    - metrics.json
-    - confusion_matrix.png
+    metrics:
+      # Specify the metrics file as target
+      - metrics.json:
+          cache: false
+    plots:
+      # Set the target to the file containing predictions data
+      - predictions.csv:
+          # Write the plot template
+          template: confusion_normalized
+          x: predicted_label
+          y: true_label
+          x_label: 'Predicted label'
+          y_label: 'True label'
+          title: Confusion matrix
+          # Set the cache parameter to store
+          # plot data in git repository
+          cache: false
