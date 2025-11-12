@@ -1,0 +1,24 @@
+stages:
+  preprocess:
+    # Run the data preprocessing script
+    cmd: python preprocess_dataset.py
+    deps:
+    - preprocess_dataset.py
+    - raw_dataset/weather.csv
+    - utils_and_constants.py
+    outs:
+    - processed_dataset/weather.csv
+
+  train:
+    # Run the model training script
+    cmd: python train.py
+    deps:
+    - metrics_and_plots.py
+    - model.py
+    # Specify the preprocessed dataset as a dependency
+    - processed_dataset/weather.csv
+    - train.py
+    - utils_and_constants.py
+    outs:
+    - metrics.json
+    - confusion_matrix.png
