@@ -286,4 +286,82 @@ Upload artifacts explicitly if needed for review
 Use CML only after confirming files exist in workspace
 
 
+🚀 Trademark Notes: DVC + GitHub Actions Debugging Journey
+📌 Core Lessons
+DVC expects declared outputs → If dvc.yaml says predictions.csv or metrics.json, your code must produce them.
 
+Don’t reinvent functions → You already had logging, metrics saving, and CSV writing in place. Creating new ad‑hoc functions broke consistency.
+
+Git+DVC are history-based → DVC compares what’s committed in Git, not just what exists locally.
+
+Workflows only run in .github/workflows/ → Putting YAML elsewhere won’t trigger GitHub Actions.
+
+PR trigger matters → on: pull_request: branches: ['main'] only runs when a PR targets main.
+
+🛠️ Debugging Checklist
+1. Predictions CSV
+Error: ERROR: failed to reproduce 'train': output 'predictions.csv' does not exist
+
+Fix: Save predictions explicitly in train.py:
+
+python
+df = pd.DataFrame({
+    "predicted_label": y_pred,
+    "true_label": y_test
+})
+df.to_csv("predictions.csv", index=False)
+2. Metrics JSON
+Error: dvc metrics diff main --md showed blanks (-).
+
+Cause: metrics.json not committed in main.
+
+Fix:
+
+bash
+git checkout main
+dvc repro
+git add metrics.json dvc.lock
+git commit -m "Track metrics.json in main"
+git push
+3. Git Commands
+Remove folder but keep locally:
+
+bash
+git rm -r --cached folder_name
+Remove folder completely:
+
+bash
+git rm -r folder_name
+Force push:
+
+bash
+git push origin branch_name --force
+Safer:
+
+bash
+git push origin branch_name --force-with-lease
+4. GitHub Actions Workflow
+File must be in .github/workflows/dvc-pipeline.yml.
+
+Trigger only fires on PRs into main:
+
+yaml
+on:
+  pull_request:
+    branches: ['main']
+Permissions for commenting:
+
+yaml
+permissions:
+  contents: write
+  pull-requests: write
+✅ Final Insight
+Your system fell apart because you added new functions instead of aligning with DVC’s declared outputs. Once you stopped reinventing and simply:
+
+committed metrics.json properly,
+
+saved predictions.csv consistently,
+
+and placed workflows in the right folder,
+
+everything clicked back into place.
