@@ -1,6 +1,6 @@
 stages:
   preprocess:
-    cmd: python3 preprocess_dataset.py
+    cmd: python preprocess_dataset.py
     deps:
     - preprocess_dataset.py
     - raw_dataset/weather.csv
@@ -8,7 +8,7 @@ stages:
     outs:
     - processed_dataset/weather.csv
   train:
-    cmd: python3 train.py
+    cmd: python train.py
     deps:
     - metrics_and_plots.py
     - model.py
