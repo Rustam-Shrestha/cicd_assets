@@ -3,10 +3,9 @@
 
 # Ignore Excel files
 *.xls
-*.xlsx
+*.xls
 
-# Ignore JSON and XML data files
-*.json
+
 *.xml
 
 # Ignore Parquet and Feather files
