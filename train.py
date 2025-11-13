@@ -1,8 +1,9 @@
 import json
+
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from metrics_and_plots import save_metrics   # import only what you need
+from metrics_and_plots import save_metrics, save_predictions, save_roc_curve
 from model import evaluate_model, train_model
 from utils_and_constants import PROCESSED_DATASET, TARGET_COLUMN
 
@@ -26,13 +27,8 @@ def main():
     print("======================================================")
 
     save_metrics(metrics)
-
-    # ✅ Save predictions for DVC plots
-    df = pd.DataFrame({
-        "predicted_label": y_pred,
-        "true_label": y_test
-    })
-    df.to_csv("predictions.csv", index=False)
+    save_predictions(y_test, y_pred)
+    save_roc_curve(y_test, y_pred_proba)
 
 
 if __name__ == "__main__":

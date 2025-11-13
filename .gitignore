@@ -1,34 +1,34 @@
-# Ignore all CSV files
-# *.csv
+# # Ignore all CSV files
+# # *.csv
 
-# Ignore Excel files
-*.xls
-*.xlsx
+# # Ignore Excel files
+# *.xls
+# *.xlsx
 
-# Ignore JSON and XML data files
+# # Ignore JSON and XML data files
 
-*.xml
+# *.xml
 
-# Ignore Parquet and Feather files
-*.parquet
-*.feather
+# # Ignore Parquet and Feather files
+# *.parquet
+# *.feather
 
-# Ignore HDF5 and pickle files
-*.h5
-*.hdf5
-*.pkl
+# # Ignore HDF5 and pickle files
+# *.h5
+# *.hdf5
+# *.pkl
 
-# Ignore any dataset folder
-# datasets/
-# data/
+# # Ignore any dataset folder
+# # datasets/
+# # data/
 
-jupyterenv/
-mlruns/
-/animal_clf_dataset
+# jupyterenv/
+# mlruns/
+# /animal_clf_dataset
 
 .ipynb_checkpoints/
 
-node_modules/
-/pages
-/signed.pdf
-/confusion_matrix.png
+# node_modules/
+# /pages
+# /signed.pdf
+# /confusion_matrix.png
