@@ -1,11 +1,12 @@
 # # Ignore all CSV files
 # # *.csv
 
-# # Ignore Excel files
-# *.xls
-# *.xlsx
+# Ignore Excel files
+*.xls
+*.xls
 
-# # Ignore JSON and XML data files
+
+*.xml
 
 # *.xml
 
