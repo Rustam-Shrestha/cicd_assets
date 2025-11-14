@@ -81,8 +81,7 @@ jobs:
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if [ -s metrics_compare.md ]; then
-            cml comment create metrics_compare.md
-          else
-            echo "No metrics differences to report."
-          fi
+          git fetch --prune
+          dvc metrics diff --md main > metrics_compare.md || echo "No metrics differences found." > metrics_compare.md
+          cat metrics_compare.md
+          cml comment create metrics_compare.md
