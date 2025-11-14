@@ -368,3 +368,18 @@ everything clicked back into place.
 
 
 # dont comimit and regret as we may be in problem as the files may not be in proper way we expect to be 
+
+# Make sure you are on your branch
+git checkout hp_tune/hp_tuning_and_report
+
+# Fetch latest remote refs
+git fetch origin
+
+# Switch to main locally
+git checkout main
+
+# Reset main to your branch's state
+git reset --hard hp_tune/hp_tuning_and_report
+
+# Push forcefully to remote main
+git push origin main --force
