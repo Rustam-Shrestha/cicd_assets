@@ -30,17 +30,44 @@ jobs:
           
       - name: Setup DVC
         uses: iterative/setup-dvc@v1
-          
+
+      # 🔹 Debug right after setup
+      - name: Debug Git state
+        run: |
+          git branch --show-current
+          git log -1 --oneline
+          git branch -r
+          ls -R
+
+      - name: Debug DVC state
+        run: |
+          dvc --version
+          dvc list .
+          dvc metrics show || echo "No metrics found"
+          dvc repro -n || echo "Pipeline dry-run failed"
+
       - name: Run DVC pipeline
-        run: dvc repro
+        run: |
+          set -x
+          dvc repro
+          set +x
+
+      # 🔹 Debug before metrics diff
+      - name: Debug metrics diff
+        run: |
+          echo "=== Metrics in current branch ==="
+          dvc metrics show
+          echo "=== Metrics in main branch ==="
+          git fetch --prune
+          git checkout main
+          dvc metrics show || echo "No metrics in main"
+          git checkout -
+          echo "=== Running metrics diff ==="
+          dvc metrics diff --md main || echo "Metrics diff failed"
+          cat metrics_compare.md || echo "metrics_compare.md not created"
 
       - name: Write CML report
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Compare metrics with main branch
-          git fetch --prune
-          dvc metrics diff --md main >> metrics_compare.md
-          
-          # Create comment from markdown report
           cml comment create metrics_compare.md
