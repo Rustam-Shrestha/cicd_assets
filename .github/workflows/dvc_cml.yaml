@@ -31,28 +31,37 @@ jobs:
       - name: Setup DVC
         uses: iterative/setup-dvc@v1
 
-      # 🔹 Debug right after setup
+      # 🔹 Debug Git state
       - name: Debug Git state
         run: |
+          echo "=== Current branch ==="
           git branch --show-current
+          echo "=== Latest commit ==="
           git log -1 --oneline
+          echo "=== Remote branches ==="
           git branch -r
+          echo "=== Files in repo ==="
           ls -R
 
+      # 🔹 Debug DVC state
       - name: Debug DVC state
         run: |
+          echo "=== DVC version ==="
           dvc --version
+          echo "=== DVC tracked files ==="
           dvc list .
+          echo "=== DVC metrics list ==="
           dvc metrics show || echo "No metrics found"
-          dvc repro -n || echo "Pipeline dry-run failed"
+          echo "=== DVC repro dry-run ==="
+          dvc repro --dry || echo "Pipeline dry-run failed"
 
       - name: Run DVC pipeline
         run: |
-          set -x
+          set -x   # enable bash debug mode
           dvc repro
           set +x
 
-      # 🔹 Debug before metrics diff
+      # 🔹 Debug metrics diff
       - name: Debug metrics diff
         run: |
           echo "=== Metrics in current branch ==="
@@ -63,11 +72,17 @@ jobs:
           dvc metrics show || echo "No metrics in main"
           git checkout -
           echo "=== Running metrics diff ==="
-          dvc metrics diff --md main || echo "Metrics diff failed"
-          cat metrics_compare.md || echo "metrics_compare.md not created"
+          # Always create metrics_compare.md even if diff is empty
+          dvc metrics diff --md main > metrics_compare.md || echo "No diff found" > metrics_compare.md
+          echo "=== Contents of metrics_compare.md ==="
+          cat metrics_compare.md
 
       - name: Write CML report
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cml comment create metrics_compare.md
+          if [ -s metrics_compare.md ]; then
+            cml comment create metrics_compare.md
+          else
+            echo "No metrics differences to report."
+          fi
