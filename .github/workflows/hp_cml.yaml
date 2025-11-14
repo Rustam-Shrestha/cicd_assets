@@ -40,12 +40,9 @@ jobs:
         run: |
           # Finish the create pull request command
           cml pr create \
-          --user-email hp-bot@cicd.ai \
-          --user-name HPBot \
-          --message "HP tuning" \
-          # Write the new head branch name
-          --branch train/${{ github.sha }} \
-          # Write the target branch name
-          --target-branch main \
-          # Commit the hyperparameter job output file
-          rfc_best_params.json
+            --user-email hp-bot@cicd.ai \
+            --user-name HPBot \
+            --message "HP tuning" \
+            --branch train/${{ github.sha }} \
+            --target-branch main \
+            rfc_best_params.json
