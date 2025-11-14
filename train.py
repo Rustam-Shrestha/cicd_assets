@@ -1,25 +1,18 @@
 import json
 
-import pandas as pd
-from sklearn.model_selection import train_test_split
-
 from metrics_and_plots import save_metrics, save_predictions, save_roc_curve
 from model import evaluate_model, train_model
-from utils_and_constants import PROCESSED_DATASET, TARGET_COLUMN
-
-
-def load_data(file_path):
-    data = pd.read_csv(file_path)
-    X = data.drop(TARGET_COLUMN, axis=1)
-    y = data[TARGET_COLUMN]
-    return X, y
+from sklearn.model_selection import train_test_split
+from utils_and_constants import PROCESSED_DATASET, load_data, load_hyperparameters
 
 
 def main():
     X, y = load_data(PROCESSED_DATASET)
     X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=1993)
 
-    model = train_model(X_train, y_train)
+    # Load hyperparameters from the JSON file
+    hyperparameters = load_hyperparameters("rfc_best_params.json")
+    model = train_model(X_train, y_train, hyperparameters)
     metrics, y_pred, y_pred_proba = evaluate_model(model, X_test, y_test)
 
     print("====================Test Set Metrics==================")

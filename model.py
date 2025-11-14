@@ -2,14 +2,15 @@ import json
 
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
-
 from utils_and_constants import RFC_FOREST_DEPTH
 
 
-def train_model(X_train, y_train):
-    model = RandomForestClassifier(
-        max_depth=RFC_FOREST_DEPTH, n_estimators=5, random_state=1993
-    )
+def train_model(
+    X_train,
+    y_train,
+    rfc_params={"max_depth": RFC_FOREST_DEPTH, "n_estimators": 5, "random_state": 1993},
+):
+    model = RandomForestClassifier(**rfc_params)
     model.fit(X_train, y_train)
     return model
 
