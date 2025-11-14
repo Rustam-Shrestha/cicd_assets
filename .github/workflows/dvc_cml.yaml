@@ -66,16 +66,11 @@ jobs:
         run: |
           echo "=== Metrics in current branch ==="
           dvc metrics show
-          echo "=== Metrics in main branch ==="
-          git fetch --prune
-          git checkout main
-          dvc metrics show || echo "No metrics in main"
-          git checkout -
-          echo "=== Running metrics diff ==="
-          # Always create metrics_compare.md even if diff is empty
-          dvc metrics diff --md main > metrics_compare.md || echo "No diff found" > metrics_compare.md
-          echo "=== Contents of metrics_compare.md ==="
+          echo "=== Running metrics diff against main ==="
+          git fetch origin main
+          dvc metrics diff --md origin/main > metrics_compare.md || echo "No diff found" > metrics_compare.md
           cat metrics_compare.md
+
 
       - name: Write CML report
         env:
