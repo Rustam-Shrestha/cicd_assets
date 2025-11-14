@@ -2,12 +2,14 @@ name: hp-tuning
 
 on:
   pull_request:
-    branches: ['main']
+    branches: ["main"]
 
 permissions: write-all
 
 jobs:
   hp_tune:
+    # Only run job if the current repository
+    # starts with the right prefix
     if: startsWith(github.head_ref, 'hp_tune/')
     runs-on: ubuntu-latest
     steps:
@@ -30,13 +32,20 @@ jobs:
 
       - name: Run DVC pipeline
         run: |
-          dvc pull
           dvc repro -f hp_tune
       
       - name: Create training branch
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cml comment create hp_tuning_results.md
-          export BRANCH_NAME=train/$(git rev-parse --short "${{ github.sha }}")
-          cml pr create --user-email hp-bot@cicd.ai --user-name HPBot --message "HP tuning" --branch $BRANCH_NAME rfc_best_params.json
+          # Finish the create pull request command
+          cml pr create \
+          --user-email hp-bot@cicd.ai \
+          --user-name HPBot \
+          --message "HP tuning" \
+          # Write the new head branch name
+          --branch train/${{ github.sha }} \
+          # Write the target branch name
+          --target-branch main \
+          # Commit the hyperparameter job output file
+          rfc_best_params.json
